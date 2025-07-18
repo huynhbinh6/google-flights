@@ -1,6 +1,6 @@
 ## App Architecture
 
-├── .gitignore
+```├── .gitignore
 ├── app.json
 ├── babel.config.js
 ├── index.ts
@@ -39,6 +39,7 @@
     │   └── responsive.ts
 ├── tsconfig.json
 └── yarn.lock
+```
 
 # FlightFinder - React Native Expo App
 
