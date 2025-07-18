@@ -1,4 +1,5 @@
 ## App Architecture
+
 ├── .gitignore
 ├── app.json
 ├── babel.config.js
