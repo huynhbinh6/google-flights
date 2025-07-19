@@ -5,4 +5,6 @@ export const colors = {
     "borderInput": "#ddd",
     "white": "#ffffff",
     "black": "#000000",
+    "subtitle": "#666666",
+    "gray": "#697175",
 }

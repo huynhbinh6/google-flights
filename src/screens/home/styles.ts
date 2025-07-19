@@ -1,0 +1,391 @@
+import { colors } from "@utils/colors";
+import { HEADER_HEIGHT, STATUSBAR_HEIGHT } from "@utils/responsive";
+import { StyleSheet } from "react-native";
+
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 20,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    paddingTop: HEADER_HEIGHT + STATUSBAR_HEIGHT,
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: "#e0e0e0",
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 8,
+    color: colors.black,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: colors.subtitle,
+    textAlign: "center",
+    marginVertical: 10,
+  },
+  welcomeText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: colors.black,
+    marginBottom: 10,
+  },
+  textPickerModal: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: colors.black,
+    marginVertical: 10,
+  },
+  form: {
+    marginTop: 20,
+  },
+  input: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 15,
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: "#007AFF",
+    borderRadius: 8,
+    padding: 15,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  buttonDisabled: {
+    backgroundColor: "#ccc",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  linkButton: {
+    marginTop: 15,
+    alignItems: "center",
+  },
+  linkText: {
+    color: "#007AFF",
+    fontSize: 16,
+  },
+  welcome: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 5,
+  },
+  searchButton: {
+    backgroundColor: colors.primary,
+    margin: 20,
+    borderRadius: 8,
+    padding: 15,
+    alignItems: "center",
+  },
+  searchButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  searchButtonDisabled: {
+    backgroundColor: "#ccc",
+  },
+  section: {
+    margin: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 15,
+    color: "#333",
+  },
+  destinationCard: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  destinationInfo: {
+    flex: 1,
+  },
+  destinationName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  destinationCode: {
+    fontSize: 14,
+    color: "#666",
+    marginTop: 2,
+  },
+  destinationPrice: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#007AFF",
+  },
+  emptyState: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyStateText: {
+    fontSize: 16,
+    color: "#666",
+  },
+  tripTypeContainer: {
+    flexDirection: "row",
+    borderWidth: 1,
+    marginBottom: 20,
+    borderColor: colors.borderInput,
+    borderRadius: 8,
+    backgroundColor: colors.white,
+  },
+  tripTypeButton: {
+    flex: 1,
+    padding: 10,
+    alignItems: "center",
+    borderRightWidth: 1,
+    borderColor: colors.borderInput,
+  },
+  tripTypeButtonActive: {
+    borderBottomWidth: 4,
+    borderBottomColor: colors.primary,
+  },
+  tripTypeText: {
+    fontSize: 16,
+    paddingTop: 4,
+    fontWeight: "bold",
+  },
+  tripTypeTextActive: {
+    fontSize: 16,
+    color: colors.primary,
+    fontWeight: "bold",
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+    color: "#333",
+  },
+  dateContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  dateGroup: {
+    flex: 1,
+  },
+  dateButton: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 15,
+    alignItems: "center",
+  },
+  dateButtonText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  picker: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
+  loadingText: {
+    fontSize: 16,
+    color: "#666",
+    marginTop: 10,
+  },
+  backButton: {
+    marginBottom: 10,
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: "#007AFF",
+  },
+  flightList: {
+    padding: 20,
+  },
+  flightCard: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 20,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  flightHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  airline: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#007AFF",
+  },
+  flightDetails: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  timeInfo: {
+    alignItems: "center",
+  },
+  time: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  airport: {
+    fontSize: 14,
+    color: "#666",
+    marginTop: 2,
+  },
+  flightPath: {
+    alignItems: "center",
+    flex: 1,
+  },
+  duration: {
+    fontSize: 14,
+    color: "#666",
+  },
+  stops: {
+    fontSize: 12,
+    color: "#999",
+    marginTop: 2,
+  },
+  flightSummary: {
+    padding: 20,
+  },
+  summaryCard: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  flightNumber: {
+    fontSize: 14,
+    color: "#666",
+    marginTop: 5,
+  },
+  route: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginTop: 10,
+  },
+  passengerDetails: {
+    padding: 20,
+  },
+  bookButton: {
+    backgroundColor: "#007AFF",
+    margin: 20,
+    borderRadius: 8,
+    padding: 15,
+    alignItems: "center",
+  },
+  bookButtonDisabled: {
+    backgroundColor: "#ccc",
+  },
+  bookButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  profileCard: {
+    backgroundColor: "#fff",
+    margin: 20,
+    borderRadius: 8,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 5,
+  },
+  email: {
+    fontSize: 16,
+    color: "#666",
+  },
+  menuItem: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  menuItemText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  signOutButton: {
+    backgroundColor: "#ff4444",
+    margin: 20,
+    borderRadius: 8,
+    padding: 15,
+    alignItems: "center",
+  },
+  signOutButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});

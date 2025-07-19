@@ -4,14 +4,19 @@ import {
   TextInput,
   KeyboardTypeOptions,
   TextInputProps,
+  View,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { colors } from "@utils/colors";
 
 interface Input extends TextInputProps {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   label?: string;
   value: string;
-  onChangeText: (text: string) => void;
+  onRightIconPress?: () => void;
+  onChangeText?: (text: string) => void;
   placeholder?: string;
   keyboardType?: KeyboardTypeOptions;
   secureTextEntry?: boolean;
@@ -20,8 +25,11 @@ interface Input extends TextInputProps {
 }
 
 const Input: React.FC<Input> = ({
+  leftIcon,
+  rightIcon,
   label,
   value,
+  onRightIconPress,
   onChangeText,
   placeholder,
   keyboardType,
@@ -32,21 +40,30 @@ const Input: React.FC<Input> = ({
 }) => {
   return (
     <>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={[
-          styles.input,
-          errorMessage ? styles.inputError : null,
-          isPassword ? { paddingRight: 40 } : {},
-        ]}
-        placeholder={placeholder || "Enter text"}
-        value={value}
-        onChangeText={onChangeText}
-        keyboardType={keyboardType || "default"}
-        autoCapitalize="none"
-        secureTextEntry={secureTextEntry || false}
-        {...rest}
-      />
+      {label ? <Text style={styles.label}>{label}</Text> : null}
+      <View style={styles.container}>
+        {leftIcon && <View style={styles.iconLeft}>{leftIcon}</View>}
+        <TextInput
+          style={[
+            styles.input,
+            errorMessage ? styles.inputError : null,
+            isPassword ? { paddingRight: 40 } : {},
+          ]}
+          placeholder={placeholder || "Enter text"}
+          value={value}
+          placeholderTextColor={colors.gray}
+          onChangeText={onChangeText}
+          keyboardType={keyboardType || "default"}
+          autoCapitalize="none"
+          secureTextEntry={secureTextEntry || false}
+          {...rest}
+        />
+        {rightIcon && (
+          <TouchableOpacity onPress={onRightIconPress} style={styles.iconRight}>
+            {rightIcon}
+          </TouchableOpacity>
+        )}
+      </View>
       {errorMessage ? (
         <Text style={styles.errorText}>{errorMessage}</Text>
       ) : null}
@@ -55,6 +72,17 @@ const Input: React.FC<Input> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    backgroundColor: colors.inputBackground,
+    borderWidth: 1,
+    borderColor: colors.borderInput,
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    alignItems: "center",
+    marginBottom: 15,
+    height: 50,
+  },
   label: {
     fontSize: 16,
     color: colors.black,
@@ -62,13 +90,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   input: {
-    backgroundColor: colors.inputBackground,
-    borderWidth: 1,
-    borderColor: colors.borderInput,
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 15,
     fontSize: 16,
+  },
+  iconLeft: {
+    marginRight: 8,
+  },
+  iconRight: {
+    marginLeft: 8,
   },
   inputError: {
     borderColor: "red",
