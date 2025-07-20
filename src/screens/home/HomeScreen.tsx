@@ -1,46 +1,14 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { styles } from "@screens/home/styles";
 import Header from "@components/Header";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "@components/Input";
+import { IHomeScreenProps } from "./types";
+import { useViewModel } from "./viewModel";
 
-type Props = {
-  navigation: any;
-};
-
-type UserData = {
-  token: string;
-  email: string;
-  name: string;
-};
-
-const HomeScreen = (props: Props) => {
-  const [userData, setUserData] = useState<UserData>({} as UserData);
-
-  useEffect(() => {
-    loadUserData();
-  }, []);
-
-  const loadUserData = async () => {
-    try {
-      const data = await AsyncStorage.getItem("userData");
-      if (data) {
-        setUserData(JSON.parse(data));
-      }
-    } catch (error) {
-      console.error("Error loading user data:", error);
-    }
-  };
-
+const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
+  const { userData } = useViewModel({ navigation, route });
   const popularDestinations = [
     { id: 1, name: "New York", code: "NYC", price: "$299" },
     { id: 2, name: "London", code: "LHR", price: "$599" },
@@ -53,11 +21,12 @@ const HomeScreen = (props: Props) => {
       <ScrollView style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.welcomeText}>
-            Welcome, {userData.name || "Guest"}!
+            Welcome, {userData.displayName || "Guest"}!
           </Text>
-          <TouchableOpacity onPress={() => props.navigation.navigate("Search")}>
+          <TouchableOpacity>
             <Input
               value=""
+              onPress={() => navigation.navigate("Search")}
               placeholder="Where to?"
               leftIcon={
                 <Ionicons name="search-outline" size={24} color="black" />

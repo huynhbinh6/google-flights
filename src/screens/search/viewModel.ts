@@ -1,11 +1,13 @@
-import { View, Text } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { axiosClient } from "services/api/axiosClient";
-import { BASE_URL } from "services/api/config";
+import { useEffect, useRef, useState } from "react";
 import { IDeparture, ISearchScreenProps } from "./types";
 import { CustomModalRef } from "@components/CustomModal";
 import { PassengerData, PassengerModalRef } from "@components/PassengersModal";
-import { set } from "@react-native-firebase/database";
+import { axiosClient } from "services/api/axiosClient";
+import { BASE_URL } from "services/api/config";
+import * as Location from "expo-location";
+import { Alert } from "react-native";
+import { getNearByAirports } from "@services/api/airportService";
+import { useAirportStore } from "@middleware/airportStore";
 
 export const useViewModel = ({ navigation, route }: ISearchScreenProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -255,6 +257,26 @@ export const useViewModel = ({ navigation, route }: ISearchScreenProps) => {
     ],
   };
 
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null
+  );
+  const airports = useAirportStore((state) => state.airports);
+  // const isLoading = useAirportStore((state) => state.isLoading);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission Denied", "Location permission is required.");
+        return;
+      }
+      const location: Location.LocationObject | null =
+        await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+      getNearByAirports(latitude, longitude);
+    })();
+  }, []);
+
   const tabRoundTripPicker = () => {
     setTripType("roundtrip");
   };
@@ -285,8 +307,8 @@ export const useViewModel = ({ navigation, route }: ISearchScreenProps) => {
   };
 
   const handleOpenDeparture = () => {
-    modalRef.current?.open(data, (resultFromModal) => {
-      console.log("Received from modal:", resultFromModal);
+    modalRef.current?.open(airports?.nearby, (resultFromModal) => {
+      console.log("Received from modal:", airports?.nearby);
       setFrom(resultFromModal);
     });
   };
@@ -383,6 +405,7 @@ export const useViewModel = ({ navigation, route }: ISearchScreenProps) => {
     data,
     from,
     to,
+    airports,
     modalRef,
     passengerModalRef,
     passengers,

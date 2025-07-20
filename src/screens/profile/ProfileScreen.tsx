@@ -2,31 +2,29 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
   Alert,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../../App";
 import { styles } from "../home/styles";
 import Header from "@components/Header";
+import { useAuthStore } from "@middleware/authStore";
+import { User } from "firebase/auth";
+import { colors } from "@utils/colors";
 
 export default function ProfileScreen() {
-  const [userData, setUserData] = useState(null);
-  const authContext = useContext(AuthContext);
-  const signOut = authContext?.signOut;
+  const [userData, setUserData] = useState<User | null>();
+  const logout = useAuthStore((state) => state.logout);
 
   useEffect(() => {
     loadUserData();
   }, []);
 
+  const { user } = useAuthStore();
+
   const loadUserData = async () => {
     try {
-      const data = await AsyncStorage.getItem("userData");
-      if (data) {
-        setUserData(JSON.parse(data));
-      }
+      setUserData(user);
     } catch (error) {
       console.error("Error loading user data:", error);
     }
@@ -34,7 +32,7 @@ export default function ProfileScreen() {
   const handleSignOut = () => {
     Alert.alert("Sign Out", "Are you sure you want to sign out?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Sign Out", onPress: () => signOut && signOut() },
+      { text: "Sign Out", onPress: () => logout && logout() },
     ]);
   };
 
@@ -43,10 +41,22 @@ export default function ProfileScreen() {
       <Header title={"Profile"} />
       <ScrollView style={styles.container}>
         <View style={styles.profileCard}>
-          <Text style={styles.name}>{userData?.name || "User"}</Text>
-          <Text style={styles.email}>
-            {userData?.email || "user@example.com"}
-          </Text>
+          <View
+            style={{
+              backgroundColor: colors.background,
+              width: 80,
+              height: 80,
+              borderRadius: 50,
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 10,
+            }}
+          >
+            <Text style={styles.name}>
+              {userData?.displayName?.charAt(0).slice(0, 1) || "U"}
+            </Text>
+          </View>
+          <Text style={styles.name}>{userData?.displayName || "User"}</Text>
         </View>
 
         <View style={styles.section}>

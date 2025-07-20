@@ -31,7 +31,7 @@ const generateNextDays = (count: number): DayType[] => {
     const day = nextDay.getDate().toString().padStart(2, "0");
     const month = nextDay.toLocaleString("default", { month: "short" });
     const fullDate = nextDay.toISOString().split("T")[0];
-    const display = `${day} ${month}`; // <- "21 Jun"
+    const display = `${day} ${month}`;
 
     daysArray.push({ day, month, fullDate, display, price: 2000 });
   }

@@ -6,64 +6,17 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useContext, useState } from "react";
-import {
-  useForm,
-  Controller,
-  ControllerFieldState,
-  ControllerRenderProps,
-  FieldValues,
-  UseFormStateReturn,
-} from "react-hook-form";
+import React from "react";
+import { Controller } from "react-hook-form";
 import { styles } from "./styles";
 import Input from "@components/Input";
 import { colors } from "@utils/colors";
-import { AuthContext } from "../../App";
+import { useViewModel } from "./viewModel";
+import { ILoginScreenProps } from "./types";
 
-type Props = {
-  navigation: any;
-};
-
-type FormData = {
-  email: string;
-  password: string;
-};
-
-const LoginScreen = (props: Props) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const authContext = useContext(AuthContext);
-  const signIn = authContext?.signIn;
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<FormData>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-    mode: "onChange",
-  });
-
-  const onSubmit = async (data: FormData) => {
-    setLoading(true);
-    const { email } = data;
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const userData = {
-        token: "mock-token-" + Date.now(),
-        email,
-        name: email.split("@")[0],
-      };
-      if (signIn) {
-        await signIn(userData);
-      }
-    } catch (error) {}
-
-    setLoading(false);
-  };
-
-  const isButtonDisabled = !isValid || loading;
+const LoginScreen = React.memo(({ navigation, route }: ILoginScreenProps) => {
+  const { loading, control, handleSubmit, errors, onSubmit, isButtonDisabled } =
+    useViewModel({ navigation, route });
   return (
     <>
       <KeyboardAvoidingView
@@ -114,12 +67,11 @@ const LoginScreen = (props: Props) => {
                   onChangeText={onChange}
                   errorMessage={errors.password?.message}
                   placeholder="Enter your password"
+                  secureTextEntry
                   isPassword
                 />
               )}
             />
-
-            {/* <Text style={styles.forgotPwd}>Forget password?</Text> */}
 
             <TouchableOpacity
               style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
@@ -137,7 +89,7 @@ const LoginScreen = (props: Props) => {
               <Text>
                 Don't have an account?{" "}
                 <Text
-                  onPress={() => props.navigation.navigate("SignUp")}
+                  onPress={() => navigation.navigate("SignUp")}
                   style={styles.signup}
                 >
                   Sign up
@@ -149,6 +101,6 @@ const LoginScreen = (props: Props) => {
       </KeyboardAvoidingView>
     </>
   );
-};
+});
 
 export default LoginScreen;

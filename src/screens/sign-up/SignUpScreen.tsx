@@ -6,52 +6,17 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
-import {
-  useForm,
-  Controller,
-  ControllerFieldState,
-  ControllerRenderProps,
-  FieldValues,
-  UseFormStateReturn,
-} from "react-hook-form";
+import React from "react";
+import { Controller } from "react-hook-form";
 import { styles } from "./styles";
 import Input from "@components/Input";
 import { colors } from "@utils/colors";
+import { ISignUpScreenProps } from "./types";
+import { useViewModel } from "./viewModel";
 
-type Props = {
-  navigation: any;
-};
-
-type FormData = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-const SignUpScreen = (props: Props) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<FormData>({
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-    mode: "onChange",
-  });
-
-  const onSubmit = (data: FormData) => {
-    setLoading(true);
-    //API call to login
-
-    setLoading(false);
-  };
-
-  const isButtonDisabled = !isValid || loading;
+const SignUpScreen = React.memo(({ navigation, route }: ISignUpScreenProps) => {
+  const { loading, control, handleSubmit, errors, onSubmit, isButtonDisabled } =
+    useViewModel({ navigation, route });
   return (
     <>
       <KeyboardAvoidingView
@@ -74,10 +39,6 @@ const SignUpScreen = (props: Props) => {
                 maxLength: {
                   value: 50,
                   message: "Name cannot exceed 50 characters",
-                },
-                pattern: {
-                  value: /^[a-zA-Z\\s]+$/,
-                  message: "Invalid email format",
                 },
               }}
               render={({ field: { onChange, value } }) => (
@@ -151,7 +112,7 @@ const SignUpScreen = (props: Props) => {
               <Text>
                 Already have an account?{" "}
                 <Text
-                  onPress={() => props.navigation.navigate("Login")}
+                  onPress={() => navigation.navigate("Login")}
                   style={styles.signup}
                 >
                   Sign In
@@ -163,6 +124,6 @@ const SignUpScreen = (props: Props) => {
       </KeyboardAvoidingView>
     </>
   );
-};
+});
 
 export default SignUpScreen;

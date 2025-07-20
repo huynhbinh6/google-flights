@@ -24,52 +24,57 @@ interface Input extends TextInputProps {
   isPassword?: boolean;
 }
 
-const Input: React.FC<Input> = ({
-  leftIcon,
-  rightIcon,
-  label,
-  value,
-  onRightIconPress,
-  onChangeText,
-  placeholder,
-  keyboardType,
-  secureTextEntry,
-  errorMessage,
-  isPassword = false,
-  ...rest
-}) => {
-  return (
-    <>
-      {label ? <Text style={styles.label}>{label}</Text> : null}
-      <View style={styles.container}>
-        {leftIcon && <View style={styles.iconLeft}>{leftIcon}</View>}
-        <TextInput
-          style={[
-            styles.input,
-            errorMessage ? styles.inputError : null,
-            isPassword ? { paddingRight: 40 } : {},
-          ]}
-          placeholder={placeholder || "Enter text"}
-          value={value}
-          placeholderTextColor={colors.gray}
-          onChangeText={onChangeText}
-          keyboardType={keyboardType || "default"}
-          autoCapitalize="none"
-          secureTextEntry={secureTextEntry || false}
-          {...rest}
-        />
-        {rightIcon && (
-          <TouchableOpacity onPress={onRightIconPress} style={styles.iconRight}>
-            {rightIcon}
-          </TouchableOpacity>
-        )}
-      </View>
-      {errorMessage ? (
-        <Text style={styles.errorText}>{errorMessage}</Text>
-      ) : null}
-    </>
-  );
-};
+const Input = React.memo(
+  ({
+    leftIcon,
+    rightIcon,
+    label,
+    value,
+    onRightIconPress,
+    onChangeText,
+    placeholder,
+    keyboardType,
+    secureTextEntry,
+    errorMessage,
+    isPassword = false,
+    ...rest
+  }: Input) => {
+    return (
+      <>
+        {label ? <Text style={styles.label}>{label}</Text> : null}
+        <View style={styles.container}>
+          {leftIcon && <View style={styles.iconLeft}>{leftIcon}</View>}
+          <TextInput
+            style={[
+              styles.input,
+              errorMessage ? styles.inputError : null,
+              isPassword ? { paddingRight: 40 } : {},
+            ]}
+            placeholder={placeholder || "Enter text"}
+            value={value}
+            placeholderTextColor={colors.gray}
+            onChangeText={onChangeText}
+            keyboardType={keyboardType || "default"}
+            autoCapitalize="none"
+            secureTextEntry={secureTextEntry || false}
+            {...rest}
+          />
+          {rightIcon && (
+            <TouchableOpacity
+              onPress={onRightIconPress}
+              style={styles.iconRight}
+            >
+              {rightIcon}
+            </TouchableOpacity>
+          )}
+        </View>
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
+      </>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   container: {

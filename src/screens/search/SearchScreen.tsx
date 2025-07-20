@@ -1,26 +1,15 @@
-import React, { useRef, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { styles } from "../home/styles";
 import Header from "@components/Header";
 import { colors } from "@utils/colors";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Flight from "@components/Flight";
-import CustomModal, { CustomModalRef } from "@components/CustomModal";
+import CustomModal from "@components/CustomModal";
 import { useViewModel } from "./viewModel";
 import moment from "moment";
-import { IDeparture, ISearchScreenProps } from "./types";
-import PassengerModal, {
-  PassengerData,
-  PassengerModalRef,
-} from "@components/PassengersModal";
-import { set } from "@react-native-firebase/database";
+import { ISearchScreenProps } from "./types";
+import PassengerModal from "@components/PassengersModal";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "@components/Input";
 
@@ -31,6 +20,7 @@ export default function SearchScreen({
   const {
     isLoading,
     data,
+    airports,
     from,
     to,
     modalRef,
@@ -58,7 +48,11 @@ export default function SearchScreen({
 
   return (
     <>
-      <Header title="Booking" leftIconName="chevron-back" />
+      <Header
+        title="Booking"
+        leftIconName="chevron-back"
+        onBackPress={() => navigation.goBack()}
+      />
       <ScrollView style={styles.container}>
         <View style={styles.content}>
           <View style={styles.tripTypeContainer}>

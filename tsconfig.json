@@ -4,12 +4,15 @@
     "strict": true,
     "baseUrl": "./src",
     "paths": {
+      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"],
       "@components/*": ["components/*"],
       "@screens/*": ["screens/*"],
       "@assets/*": ["assets/*"],
       "@utils/*": ["utils/*"],
       "@routes/*": ["routes/*"],
-      "utils/*": ["utils/*"],
+      "@helpers/*": ["helpers/*"],
+      "@services/*": ["services/*"],
+      "@middleware/*": ["middleware/*"]
     }
   }
 }
