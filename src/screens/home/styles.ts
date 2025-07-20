@@ -257,7 +257,6 @@ export const styles = StyleSheet.create({
   },
   flightHeader: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 15,
   },
@@ -265,6 +264,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",
+    marginLeft: 10,
   },
   price: {
     fontSize: 20,

@@ -2,16 +2,22 @@ import { View, Text } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { axiosClient } from "services/api/axiosClient";
 import { BASE_URL } from "services/api/config";
-import { IDeparture } from "./types";
+import { IDeparture, ISearchScreenProps } from "./types";
 import { CustomModalRef } from "@components/CustomModal";
 import { PassengerData, PassengerModalRef } from "@components/PassengersModal";
+import { set } from "@react-native-firebase/database";
 
-export const useViewModel = () => {
+export const useViewModel = ({ navigation, route }: ISearchScreenProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [from, setFrom] = useState<IDeparture | null>(null);
   const [to, setTo] = useState<IDeparture | null>(null);
   const modalRef = useRef<CustomModalRef>(null);
   const passengerModalRef = useRef<PassengerModalRef>(null);
+  const [departDate, setDepartDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
+  const [tripType, setTripType] = useState<"roundtrip" | "oneway">("roundtrip");
+  const [showDepartDatePicker, setShowDepartDatePicker] = useState(false);
+  const [showReturnDatePicker, setShowReturnDatePicker] = useState(false);
   const [passengers, setPassengers] = useState<PassengerData>({
     adult: 1,
     child: 0,
@@ -249,6 +255,35 @@ export const useViewModel = () => {
     ],
   };
 
+  const tabRoundTripPicker = () => {
+    setTripType("roundtrip");
+  };
+  const tabOneWayPicker = () => {
+    setTripType("oneway");
+  };
+
+  const hideDatePicker = () => {
+    setShowDepartDatePicker(false);
+    setShowReturnDatePicker(false);
+  };
+
+  const handleOpenDepartureDatePicker = () => {
+    setShowDepartDatePicker(true);
+  };
+
+  const handleOpenReturnDatePicker = () => {
+    setShowReturnDatePicker(true);
+  };
+
+  const handleConfirmDepartureDate = (date: Date) => {
+    setDepartDate(date);
+    hideDatePicker();
+  };
+  const handleConfirmReturnDate = (date: Date) => {
+    setReturnDate(date);
+    hideDatePicker();
+  };
+
   const handleOpenDeparture = () => {
     modalRef.current?.open(data, (resultFromModal) => {
       console.log("Received from modal:", resultFromModal);
@@ -269,29 +304,29 @@ export const useViewModel = () => {
       return;
     }
 
-    // setLoading(true);
+    setIsLoading(true);
     try {
       // Simulate API call to Sky Scraper API
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Navigate to results with search parameters
-      // navigation.navigate("Results", {
-      //   searchParams: {
-      //     from,
-      //     to,
-      //     departDate: departDate.toISOString().split("T")[0],
-      //     returnDate:
-      //       tripType === "roundtrip"
-      //         ? returnDate.toISOString().split("T")[0]
-      //         : null,
-      //     passengers,
-      //     tripType,
-      //   },
-      // });
+      navigation.navigate("Results", {
+        searchParams: {
+          from,
+          to,
+          departDate: departDate.toISOString().split("T")[0],
+          returnDate:
+            tripType === "roundtrip"
+              ? returnDate.toISOString().split("T")[0]
+              : null,
+          passengers,
+          tripType,
+        },
+      });
     } catch (error) {
       //Alert.alert("Error", "Failed to search flights. Please try again.");
     } finally {
-      // setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -351,11 +386,23 @@ export const useViewModel = () => {
     modalRef,
     passengerModalRef,
     passengers,
+    departDate,
+    returnDate,
+    tripType,
+    showDepartDatePicker,
+    showReturnDatePicker,
     handleOpenPassengers,
     handleOpenDeparture,
     handleOpenReturn,
     renderPassengerSummary,
     getTotalPassengers,
+    hideDatePicker,
+    tabRoundTripPicker,
+    tabOneWayPicker,
+    handleConfirmDepartureDate,
+    handleConfirmReturnDate,
+    handleOpenDepartureDatePicker,
+    handleOpenReturnDatePicker,
     handleSearch,
   };
 };
