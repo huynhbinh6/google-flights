@@ -1,10 +1,22 @@
 import { View, Text } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { axiosClient } from "services/api/axiosClient";
 import { BASE_URL } from "services/api/config";
+import { IDeparture } from "./types";
+import { CustomModalRef } from "@components/CustomModal";
+import { PassengerData, PassengerModalRef } from "@components/PassengersModal";
 
 export const useViewModel = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [from, setFrom] = useState<IDeparture | null>(null);
+  const [to, setTo] = useState<IDeparture | null>(null);
+  const modalRef = useRef<CustomModalRef>(null);
+  const passengerModalRef = useRef<PassengerModalRef>(null);
+  const [passengers, setPassengers] = useState<PassengerData>({
+    adult: 1,
+    child: 0,
+    infant: 0,
+  });
   const [data, setData] = useState<Array<{
     skyId: string;
     entityId: string;
@@ -237,6 +249,82 @@ export const useViewModel = () => {
     ],
   };
 
+  const handleOpenDeparture = () => {
+    modalRef.current?.open(data, (resultFromModal) => {
+      console.log("Received from modal:", resultFromModal);
+      setFrom(resultFromModal);
+    });
+  };
+
+  const handleOpenReturn = () => {
+    modalRef.current?.open(data, (resultFromModal) => {
+      console.log("Received from modal:", resultFromModal);
+      setTo(resultFromModal);
+    });
+  };
+
+  const handleSearch = async () => {
+    if (!from || !to) {
+      // Alert.alert("Error", "Please enter departure and destination cities");
+      return;
+    }
+
+    // setLoading(true);
+    try {
+      // Simulate API call to Sky Scraper API
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Navigate to results with search parameters
+      // navigation.navigate("Results", {
+      //   searchParams: {
+      //     from,
+      //     to,
+      //     departDate: departDate.toISOString().split("T")[0],
+      //     returnDate:
+      //       tripType === "roundtrip"
+      //         ? returnDate.toISOString().split("T")[0]
+      //         : null,
+      //     passengers,
+      //     tripType,
+      //   },
+      // });
+    } catch (error) {
+      //Alert.alert("Error", "Failed to search flights. Please try again.");
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  const renderPassengerSummary = (data: PassengerData) => {
+    const parts = [`${data.adult} adult`];
+
+    if (data.child > 0) {
+      parts.push(`${data.child} child`);
+    }
+
+    if (data.infant > 0) {
+      parts.push(`${data.infant} infant`);
+    }
+
+    return parts.join(", ");
+  };
+
+  const getTotalPassengers = (data: {
+    adult: number;
+    child: number;
+    infant: number;
+  }) => {
+    const total = data.adult + data.child + data.infant;
+    if (total < 10) {
+      return `0${total}`;
+    }
+    return total;
+  };
+
+  const handleOpenPassengers = () => {
+    passengerModalRef.current?.open(passengers, setPassengers);
+  };
+
   const fetchData = async () => {
     try {
       setIsLoading(true);
@@ -257,6 +345,17 @@ export const useViewModel = () => {
 
   return {
     isLoading,
-    data
+    data,
+    from,
+    to,
+    modalRef,
+    passengerModalRef,
+    passengers,
+    handleOpenPassengers,
+    handleOpenDeparture,
+    handleOpenReturn,
+    renderPassengerSummary,
+    getTotalPassengers,
+    handleSearch,
   };
 };

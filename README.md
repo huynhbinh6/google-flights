@@ -1,10 +1,10 @@
 ## App Architecture
 
 ```├── .gitignore
+├── README.md
 ├── app.json
 ├── babel.config.js
 ├── index.ts
-├── package-lock.json
 ├── package.json
 ├── src
     ├── App.tsx
@@ -14,14 +14,20 @@
     │   ├── icon.png
     │   └── splash-icon.png
     ├── components
+    │   ├── CustomModal.tsx
+    │   ├── Flight.tsx
+    │   ├── Header.tsx
     │   └── Input.tsx
+    ├── helpers
+    │   └── firebaseConfig.ts
     ├── routes
     │   └── MainNavigation.tsx
     ├── screens
     │   ├── booking
     │   │   └── BookingScreen.tsx
     │   ├── home
-    │   │   └── HomeScreen.tsx
+    │   │   ├── HomeScreen.tsx
+    │   │   └── styles.ts
     │   ├── login
     │   │   ├── LoginScreen.tsx
     │   │   └── styles.ts
@@ -30,10 +36,16 @@
     │   ├── result
     │   │   └── ResultsScreen.tsx
     │   ├── search
-    │   │   └── SearchScreen.tsx
+    │   │   ├── SearchScreen.tsx
+    │   │   ├── types.ts
+    │   │   └── viewModel.ts
     │   └── sign-up
     │   │   ├── SignUpScreen.tsx
     │   │   └── styles.ts
+    ├── services
+    │   └── api
+    │   │   ├── axiosClient.ts
+    │   │   └── config.ts
     └── utils
     │   ├── colors.ts
     │   └── responsive.ts
@@ -57,6 +69,7 @@ A comprehensive flight booking mobile application built with React Native and Ex
 ## Setup Instructions
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - Expo CLI (`npm install -g expo-cli`)
 - RapidAPI account with Sky Scraper API subscription
@@ -65,15 +78,19 @@ A comprehensive flight booking mobile application built with React Native and Ex
 
 1. Clone the repository
 2. Install dependencies:
+
    ```bash
    npm install
    ```
-   Or use Yarn: 
-   ```bash 
+
+   Or use Yarn:
+
+   ```bash
    yarn i
    ```
 
 3. Configure API Key:
+
    - Open `services/SkyScrapperAPI.js`
    - Replace `'YOUR_RAPIDAPI_KEY_HERE'` with your actual RapidAPI key
 
@@ -91,27 +108,32 @@ A comprehensive flight booking mobile application built with React Native and Ex
 ## API Integration
 
 The app uses the Sky Scraper API from RapidAPI for:
+
 - Flight search and availability
 - Airport suggestions and autocomplete
 - Flight details and pricing
 - Real-time flight data
 
 ### API Endpoints Used:
+
 - `/api/v1/flights/search` - Search for flights
 - `/api/v1/flights/searchAirport` - Get airport suggestions
 - `/api/v1/flights/details` - Get detailed flight information
 
 ### Navigation Structure:
+
 - **Authentication Stack**: Login/Sign-up screens
 - **Main Tab Navigator**: Home, Search, Profile tabs
 - **Flight Stack**: Search → Results → Booking flow
 
 ### Key Components:
+
 - `AuthContext`: Manages authentication state
 - `SkyScrapperAPI`: Handles all API communications
 - `AsyncStorage`: Persists user data and sessions
 
 ### Data Flow:
+
 1. User authenticates through login/signup
 2. Search parameters are collected in SearchScreen
 3. API call made to Sky Scraper API
@@ -121,11 +143,13 @@ The app uses the Sky Scraper API from RapidAPI for:
 ## Customization
 
 ### Styling:
+
 - All styles are defined in the main component file
 - Color scheme uses iOS blue (#007AFF) as primary
 - Consistent spacing and typography throughout
 
 ### Adding Features:
+
 - Booking history integration
 - Push notifications for flight updates
 - Price alerts and tracking
@@ -135,16 +159,19 @@ The app uses the Sky Scraper API from RapidAPI for:
 ## Development Notes
 
 ### State Management:
+
 - Uses React Context for authentication
 - Component-level state for UI interactions
 - AsyncStorage for data persistence
 
 ### Error Handling:
+
 - Comprehensive try-catch blocks
 - User-friendly error messages
 - Network error handling
 
 ### Performance:
+
 - Lazy loading for large flight lists
 - Efficient re-renders with proper keys
 - Optimized API calls with caching
@@ -152,12 +179,14 @@ The app uses the Sky Scraper API from RapidAPI for:
 ## Deployment
 
 ### Building for Production:
+
 ```bash
 expo build:android
 expo build:ios
 ```
 
 ### Publishing Updates:
+
 ```bash
 expo publish
 ```

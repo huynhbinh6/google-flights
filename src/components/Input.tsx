@@ -74,7 +74,7 @@ const Input: React.FC<Input> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.borderInput,
     borderRadius: 12,

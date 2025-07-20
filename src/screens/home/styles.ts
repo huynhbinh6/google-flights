@@ -2,7 +2,6 @@ import { colors } from "@utils/colors";
 import { HEADER_HEIGHT, STATUSBAR_HEIGHT } from "@utils/responsive";
 import { StyleSheet } from "react-native";
 
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -20,6 +19,12 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
+  },
+  promoCodeContainer: {
+    marginBottom: 20,
+    backgroundColor: colors.white,
+    padding: 15,
+    borderRadius: 8,
   },
   title: {
     fontSize: 28,
