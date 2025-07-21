@@ -3,7 +3,7 @@ import { axiosClient } from "./axiosClient";
 import { BASE_URL } from "./config";
 
 export const getNearByAirports = async (lat: number, lng: number) => {
-  const setAirports = useAirportStore.getState().setAirports;
+  const setNearAirports = useAirportStore.getState().setNearAirports;
   const setLoading = useAirportStore.getState().setLoading;
 
   setLoading(true);
@@ -13,10 +13,10 @@ export const getNearByAirports = async (lat: number, lng: number) => {
     );
     const newData = res.data;
 
-    const currentData = useAirportStore.getState().airports;
+    const currentData = useAirportStore.getState().nearAirports;
     const isDifferent = JSON.stringify(currentData) !== JSON.stringify(newData);
     if (isDifferent) {
-      setAirports(newData);
+      setNearAirports(newData);
     }
   } catch (err) {
     console.error("Error fetching nearby airports", err);

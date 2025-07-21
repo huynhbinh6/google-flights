@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { styles } from "../home/styles";
 import { ISearchScreenProps } from "@screens/search/types";
@@ -15,6 +16,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@utils/colors";
 import FlightDateHeader from "@components/FlightDateHeader";
 import Header from "@components/Header";
+import { searchFlights } from "@helpers/mockData";
+import moment from "moment";
+import { convertMinutesToHM } from "@utils/convertMinsToHours";
 
 export default function ResultsScreen({
   route,
@@ -34,44 +38,7 @@ export default function ResultsScreen({
       // Simulate API call to Sky Scraper API
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Mock flight data
-      const mockFlights = [
-        {
-          id: 1,
-          airline: "American Airlines",
-          flightNumber: "AA123",
-          date: "20/7/2025",
-          departure: { time: "08:00", airport: searchParams.from?.skyId },
-          arrival: { time: "12:00", airport: searchParams.to?.skyId },
-          duration: "4h 00m",
-          price: "$299",
-          stops: 0,
-        },
-        {
-          id: 2,
-          airline: "Delta Air Lines",
-          flightNumber: "DL456",
-          date: "20/7/2025",
-          departure: { time: "14:30", airport: searchParams.from?.skyId },
-          arrival: { time: "18:45", airport: searchParams.to?.skyId },
-          duration: "4h 15m",
-          price: "$359",
-          stops: 0,
-        },
-        {
-          id: 3,
-          airline: "United Airlines",
-          flightNumber: "UA789",
-          date: "20/7/2025",
-          departure: { time: "10:15", airport: searchParams.from?.skyId },
-          arrival: { time: "16:30", airport: searchParams.to?.skyId },
-          duration: "6h 15m",
-          price: "$249",
-          stops: 1,
-        },
-      ];
-
-      setFlights(mockFlights);
+      setFlights(searchFlights.data.itineraries);
     } catch (error) {
       console.error("Error fetching flights:", error);
     } finally {
@@ -92,7 +59,7 @@ export default function ResultsScreen({
     <View style={styles.container}>
       {/* <FlightDateHeader /> */}
       <Header
-        title={`${searchParams.from?.skyId} → ${searchParams.to?.skyId}`}
+        title={`${searchParams.from.navigation.relevantFlightParams.skyId} → ${searchParams.to.navigation.relevantFlightParams.skyId}`}
         leftIconName="chevron-back"
         onBackPress={() => navigation.goBack()}
       />
@@ -111,34 +78,58 @@ export default function ResultsScreen({
             >
               <View style={{ flex: 1 }}>
                 <View style={styles.flightHeader}>
-                  <Ionicons name="airplane" size={14} color={colors.gray} />
+                  {flight.legs[0].carriers.marketing[0].logoUrl ? (
+                    <Image
+                      source={{
+                        uri: flight.legs[0].carriers.marketing[0].logoUrl,
+                      }}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20
+                      }}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Ionicons name="airplane" size={14} color={colors.gray} />
+                  )}
                   <View>
-                    <Text style={styles.airline}>{flight.airline}</Text>
+                    <Text style={styles.airline}>
+                      {flight.legs[0].carriers.marketing[0].name}
+                    </Text>
                     <Text style={[styles.airport, { marginLeft: 10 }]}>
-                      {flight.date}
+                      {moment(flight.legs[0].departure).format("MM/DD/YYYY")}
                     </Text>
                   </View>
                 </View>
                 <View style={styles.flightDetails}>
                   <View style={styles.timeInfo}>
-                    <Text style={styles.time}>{flight.departure.time}</Text>
+                    <Text style={styles.time}>
+                      {moment(flight.legs[0].departure).format("HH:mm")}
+                    </Text>
                     <Text style={styles.airport}>
-                      {flight.departure.airport}
+                      {flight.legs[0].origin.displayCode}
                     </Text>
                   </View>
 
                   <View style={styles.flightPath}>
-                    <Text style={styles.duration}>{flight.duration}</Text>
+                    <Text style={styles.duration}>
+                      {convertMinutesToHM(flight.legs[0].durationInMinutes)}
+                    </Text>
                     <Text style={styles.stops}>
-                      {flight.stops === 0
+                      {flight.legs[0].stopCount === 0
                         ? "-Nonstop-"
-                        : `${flight.stops} stop(s)`}
+                        : `${flight.legs[0].stopCount} stop(s)`}
                     </Text>
                   </View>
 
                   <View style={styles.timeInfo}>
-                    <Text style={styles.time}>{flight.arrival.time}</Text>
-                    <Text style={styles.airport}>{flight.arrival.airport}</Text>
+                    <Text style={styles.time}>
+                      {moment(flight.legs[0].arrival).format("HH:mm")}
+                    </Text>
+                    <Text style={styles.airport}>
+                      {flight.legs[0].destination.displayCode}
+                    </Text>
                   </View>
                 </View>
                 <View style={{ marginTop: 10 }}>
@@ -160,7 +151,7 @@ export default function ResultsScreen({
                   justifyContent: "center",
                 }}
               >
-                <Text style={styles.price}>{flight.price}</Text>
+                <Text style={styles.price}>{flight.price.formatted}</Text>
               </View>
             </View>
             {/* <FlightTicket

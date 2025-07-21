@@ -96,10 +96,10 @@ export default function SearchScreen({
             type="flight"
             flightType={tripType}
             from={"Departure"}
-            fromValue={from?.skyId}
+            fromValue={from?.navigation.relevantFlightParams.skyId}
             fromSubValue={from?.presentation?.title}
             to={"Destination"}
-            toValue={to?.skyId}
+            toValue={to?.navigation.relevantFlightParams.skyId}
             toSubValue={to?.presentation?.title}
             onPressFrom={handleOpenDeparture}
             onPressTo={handleOpenReturn}

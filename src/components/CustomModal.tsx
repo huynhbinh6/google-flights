@@ -17,41 +17,48 @@ import Modal from "react-native-modal";
 import Input from "./Input";
 import { Ionicons } from "@expo/vector-icons";
 import { set } from "@react-native-firebase/database";
+import { LocationData, Place } from "@screens/search/types";
+import { useSearchStore } from "@middleware/searchStore";
+import { debounce } from "lodash";
 
 const { height } = Dimensions.get("window");
 
-type Props = {};
-
 export type CustomModalRef = {
-  open: (data: any, onItemSelected?: (result: any) => void) => void;
+  open: (data: any, onItemSelected?: (result: Place) => void) => void;
   close: () => void;
 };
 
 const CustomModal = forwardRef<CustomModalRef>((_, ref) => {
+  const { query, setQuery, search, results } = useSearchStore();
   const [visible, setVisible] = useState(false);
-  const [payload, setPayload] = useState<any>(null);
+  const [trigger, setTrigger] = useState<boolean>(false);
+  const [payload, setPayload] = useState<Place[]>();
   const [onSubmitCallback, setOnSubmitCallback] = useState<
     ((res: any) => void) | null
   >(null);
 
   const open = useCallback(
-    (data: any, onItemSelected?: (result: any) => void) => {
+    (data: Place[], onItemSelected?: (result: Place) => void) => {
       setPayload(data);
       setOnSubmitCallback(() => onItemSelected);
       setVisible(true);
+      setTrigger(false);
     },
     []
   );
 
   const close = useCallback(() => {
     setVisible(false);
+    setTrigger(false);
     setOnSubmitCallback(null);
   }, []);
 
   const handleConfirm = (result: any) => {
     if (onSubmitCallback) {
-      onSubmitCallback(result); // send back to main screen
+      onSubmitCallback(result);
     }
+    setTrigger(false);
+    setQuery("");
     close();
   };
 
@@ -63,6 +70,19 @@ const CustomModal = forwardRef<CustomModalRef>((_, ref) => {
     }),
     [open, close]
   );
+
+  const debouncedSearch = useCallback(
+    debounce(() => {
+      search();
+    }, 500),
+    []
+  );
+
+  const handleTextChange = (text: string) => {
+    setQuery(text);
+    setTrigger(true);
+    debouncedSearch();
+  };
 
   return (
     <View>
@@ -93,12 +113,12 @@ const CustomModal = forwardRef<CustomModalRef>((_, ref) => {
             >
               <View style={{ flex: 1, marginRight: 10 }}>
                 <Input
-                  value={""}
+                  value={query}
                   placeholder="Finding flights..."
                   leftIcon={
                     <Ionicons name="search" size={18} color={colors.gray} />
                   }
-                  onChangeText={(text) => console.log(text)}
+                  onChangeText={handleTextChange}
                 />
               </View>
               <TouchableOpacity onPress={() => setVisible(false)}>
@@ -108,8 +128,8 @@ const CustomModal = forwardRef<CustomModalRef>((_, ref) => {
           </View>
           <View style={{ padding: 14, flex: 1 }}>
             <FlatList
-              data={payload}
-              keyExtractor={(item) => item.entityId}
+              data={trigger ? results : payload}
+              keyExtractor={(item) => item.navigation.entityId}
               renderItem={({ item, index }) => (
                 <TouchableOpacity onPress={() => handleConfirm(item)}>
                   <Text
@@ -119,7 +139,9 @@ const CustomModal = forwardRef<CustomModalRef>((_, ref) => {
                       paddingVertical: 10,
                       fontWeight: "400",
                     }}
-                  >{`${item.presentation.title} (${item.skyId})`}</Text>
+                  >
+                    {item.presentation.suggestionTitle}
+                  </Text>
                 </TouchableOpacity>
               )}
               ItemSeparatorComponent={() => (

@@ -12,7 +12,6 @@ export const useViewModel = ({ navigation, route }: IHomeScreenProps) => {
   const loadUserData = async () => {
     try {
       const data = await AsyncStorage.getItem("firebase_user");
-      console.log(data);
       if (data) {
         setUserData(JSON.parse(data));
       }

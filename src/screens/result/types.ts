@@ -1,12 +1,13 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { Place } from "@screens/search/types";
 
 export type IResultScreenProps = {
   navigation: NavigationProp<any>;
   route: {
     params: {
       searchParams: {
-        from: object;
-        to: object;
+        from: Place;
+        to: Place;
         departDate: string;
         returnDate?: string;
         tripType: string | "one-way" | "round-trip";

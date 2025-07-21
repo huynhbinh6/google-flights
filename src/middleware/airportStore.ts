@@ -1,16 +1,16 @@
-import { LocationData } from "@screens/search/types";
+import { LocationData, Place } from "@screens/search/types";
 import { create } from "zustand";
 
 interface LocationStore {
-  airports: LocationData | null;
+  nearAirports: LocationData | null;
   isLoading: boolean;
-  setAirports: (data: LocationData) => void;
+  setNearAirports: (data: LocationData) => void;
   setLoading: (loading: boolean) => void;
 }
 
 export const useAirportStore = create<LocationStore>((set) => ({
-  airports: null,
+  nearAirports: null,
   isLoading: false,
-  setAirports: (data) => set({ airports: data }),
+  setNearAirports: (data) => set({ nearAirports: data }),
   setLoading: (loading) => set({ isLoading: loading }),
 }));
