@@ -16,10 +16,18 @@
     ├── components
     │   ├── CustomModal.tsx
     │   ├── Flight.tsx
+    │   ├── FlightDateHeader.tsx
+    │   ├── FlightTicket.tsx
     │   ├── Header.tsx
-    │   └── Input.tsx
+    │   ├── Input.tsx
+    │   └── PassengersModal.tsx
     ├── helpers
-    │   └── firebaseConfig.ts
+    │   ├── firebaseConfig.ts
+    │   └── mockData.ts
+    ├── middleware
+    │   ├── airportStore.ts
+    │   ├── authStore.ts
+    │   └── searchStore.ts
     ├── routes
     │   └── MainNavigation.tsx
     ├── screens
@@ -27,27 +35,36 @@
     │   │   └── BookingScreen.tsx
     │   ├── home
     │   │   ├── HomeScreen.tsx
-    │   │   └── styles.ts
+    │   │   ├── styles.ts
+    │   │   ├── types.ts
+    │   │   └── viewModel.ts
     │   ├── login
     │   │   ├── LoginScreen.tsx
-    │   │   └── styles.ts
+    │   │   ├── styles.ts
+    │   │   ├── types.ts
+    │   │   └── viewModel.ts
     │   ├── profile
     │   │   └── ProfileScreen.tsx
     │   ├── result
-    │   │   └── ResultsScreen.tsx
+    │   │   ├── ResultsScreen.tsx
+    │   │   └── types.ts
     │   ├── search
     │   │   ├── SearchScreen.tsx
     │   │   ├── types.ts
     │   │   └── viewModel.ts
     │   └── sign-up
     │   │   ├── SignUpScreen.tsx
-    │   │   └── styles.ts
+    │   │   ├── styles.ts
+    │   │   ├── types.ts
+    │   │   └── viewModel.ts
     ├── services
     │   └── api
+    │   │   ├── airportService.ts
     │   │   ├── axiosClient.ts
     │   │   └── config.ts
     └── utils
     │   ├── colors.ts
+    │   ├── convertMinsToHours.ts
     │   └── responsive.ts
 ├── tsconfig.json
 └── yarn.lock
