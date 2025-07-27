@@ -177,7 +177,7 @@ The app uses the Sky Scraper API from RapidAPI for:
 
 ### State Management:
 
-- Uses React Context for authentication
+- Uses Zustand for authentication
 - Component-level state for UI interactions
 - AsyncStorage for data persistence
 
